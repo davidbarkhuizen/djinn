@@ -6,7 +6,7 @@ create table Metrics (
 	
 	Timestamp datetime not null,
 	
-	LeftImageFilePath varchar(4096)
+	LeftImageFilePath varchar(4096),
 	LeftImage blob,
 	
 	RightImageFilePath varchar(4096),

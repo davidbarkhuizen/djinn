@@ -1,6 +1,6 @@
 # drunkenmaster
 
-python flask powered job daemon  
+flask powered python job daemon server  
 
 ## to install flask
 
