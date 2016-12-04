@@ -1,6 +1,6 @@
-# drunkenmaster
+# djinn
 
-flask powered python job daemon server  
+python/flask powered REST server  
 
 ## to install flask
 
@@ -28,18 +28,13 @@ Platform
 - flask
 - JSON REST API
 
-
-
 execute a python function taking
 - 2 input file names
 - producing an output file
 
 store as much as possible in the DB
 
-
-
 EXECUTION
-
 
 set os environment variable instructing flash server to reload on detecting code changes  
 $ export FLASK_DEBUG=1  

@@ -1,4 +1,5 @@
 import os
+import logging
 
 import sys
 import sqlite3
@@ -8,15 +9,21 @@ import json
 
 user_home_path = os.path.expanduser("~")
 
+INFO_LOG_FILE_NAME = os.path.join(user_home_path, 'data', 'djinn.server.info.log')
+logging.basicConfig(filename=INFO_LOG_FILE_NAME, level=logging.INFO)
 
-def log(text):
-    print(text, file=sys.stderr)
+DEBUG_LOG_FILE_NAME = os.path.join(user_home_path, 'data', 'djinn.server.debug.log')
+logging.basicConfig(filename=DEBUG_LOG_FILE_NAME, level=logging.DEBUG)
 
+logging.getLogger().addHandler(logging.StreamHandler())
+
+logging.info('info')
+logging.debug('debug')
 
 # --------------------------------------------------------------------------------
 # DATA ACCESS LAYER
 
-DATABASE_FILE_PATH = os.path.join(user_home_path, 'data', 'drunkenmaster.sql3.db')
+DATABASE_FILE_PATH = os.path.join(user_home_path, 'data', 'djinn.sql3.db')
 
 def connect():
     db = sqlite3.connect(DATABASE_FILE_PATH)

@@ -1,1 +1,1 @@
-sqlite3 ~/data/drunkenmaster.sql3.db < schema.sql
+sqlite3 ~/data/djinn.sql3.db < schema.sql
