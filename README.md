@@ -30,8 +30,6 @@ Platform
 
 
 
-
-
 execute a python function taking
 - 2 input file names
 - producing an output file
