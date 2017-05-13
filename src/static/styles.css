@@ -1,0 +1,9 @@
+html *
+{
+	font-family: Courier;
+}
+
+.centered-text-container { text-align: center; }
+.centered-text { display: inline-block; }
+
+.bold { font-weight: bold; }

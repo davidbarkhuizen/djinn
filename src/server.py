@@ -1,79 +1,55 @@
 import os
 import logging
-
-import sys
-import sqlite3
-from flask import Flask, render_template, request, jsonify, Response
 import json
-''', session, g, redirect, url_for, abort, , flash'''
+import sqlite3
+from flask import Flask, render_template
 
-user_home_path = os.path.expanduser("~")
+def load_config(config_file_path='config.json'):
 
-INFO_LOG_FILE_NAME = os.path.join(user_home_path, 'data', 'djinn.server.info.log')
-logging.basicConfig(filename=INFO_LOG_FILE_NAME, level=logging.INFO)
+	with open(config_file_path) as json_file:
+		return json.load(json_file)
 
-DEBUG_LOG_FILE_NAME = os.path.join(user_home_path, 'data', 'djinn.server.debug.log')
-logging.basicConfig(filename=DEBUG_LOG_FILE_NAME, level=logging.DEBUG)
+def configure_logging(log_file_path, log_to_console=True):
 
-logging.getLogger().addHandler(logging.StreamHandler())
+	logging.basicConfig(filename=log_file_path, level=logging.INFO)
 
-logging.info('info')
-logging.debug('debug')
+	if log_to_console: 
+		logging.getLogger().addHandler(logging.StreamHandler())
 
-# --------------------------------------------------------------------------------
-# DATA ACCESS LAYER
-
-DATABASE_FILE_PATH = os.path.join(user_home_path, 'data', 'djinn.sql3.db')
-
+database_file_path = None
 def connect():
-    db = sqlite3.connect(DATABASE_FILE_PATH)
-    db.row_factory = sqlite3.Row
-    return db
-
+	db = sqlite3.connect(database_file_path)
+	db.row_factory = sqlite3.Row
+	return db
 
 db = None
 def get_db():
-    global db
-    db = db if db is not None else connect()
-    return db
-
-
-# --------------------------------------------------------------------------------
+	global db
+	db = db if db is not None else connect()
+	return db
 
 app = Flask('djinn')
 
-
 @app.teardown_appcontext
 def close_db(error):
-    get_db().close()
-
+	get_db().close()
 
 @app.route('/', methods=['GET'])
 def show_entries():
-    log('GOT')
-    return render_template('index.html', error=None)
-
+	return render_template('index.html', error=None)
 
 # --------------------------------------------------------------------------------
 
-@app.route('/job', methods=['POST'])
-def create_job():
+config = load_config()
 
-    log('DAWG')
+root_path = os.path.expanduser(config['root_path'])
+database_file_path = os.path.join(root_path, config['database_file_name'])
+log_file_path = os.path.join(root_path, config['log_file_name'])
 
-    if not request.json:
-        abort(400)
+configure_logging(log_file_path)
 
-    '''
-    json_str = str(request.json)
-    json.dumps(json_str, sort_keys=True, indent=2, separators=(',', ': '))
-    '''
+from api.job import job
 
-    dto = {"fish": "bird"}
-
-    return Response(json.dumps(dto), mimetype='application/json')
-
-
-# --------------------------------------------------------------------------------
-
-app.run(debug=True)
+app.register_blueprint(job)
+# host='0.0.0.0'
+app.run(debug=config['debug'], port=config['server_port'])

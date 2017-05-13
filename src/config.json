@@ -1,0 +1,7 @@
+{
+	"debug" : true
+	,"server_port" : 7143
+	,"root_path" : "~/data"
+	,"log_file_name" : "djinn.server.info.log"
+	,"database_file_name" : "djinn.sql3.db"	
+}
