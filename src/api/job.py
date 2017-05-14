@@ -5,29 +5,44 @@ import json
 
 job = Blueprint('job', __name__)
 
-url_stem = '/job'
+URL_STEM = '/job'
 
-@job.route(url_stem, methods=['GET'])
+@job.route(URL_STEM, methods=['GET'])
 def get():
-	return []
 
-@job.route(url_stem, methods=['POST'])
+	id = request.args.get('id')
+	print('id {0}'.format(id))
+
+	dto = {'id': id}
+	return Response(json.dumps(dto), mimetype='application/json')
+
+@job.route(URL_STEM, methods=['POST'])
 def post():
 	if not request.json: abort(400)
 
-	json_str = str(request.json)
-	s = json.dumps(json_str, sort_keys=True, indent=2, separators=(',', ': '))
-	print(s)
+	reversed = {}
 
-	dto = {"fish": "bird"}
+	for key in request.json.keys():
+		val = request.json[key]
+		
+		reversed[key] = val[::-1] if type(val) == str	else val
 
+	#s = json.dumps(json_str, sort_keys=True, indent=2, separators=(',', ': '))
+
+	dto = reversed	
 	return Response(json.dumps(dto), mimetype='application/json')
+	# return 200
 
-
-	return 200
-
-@job.route(url_stem, methods=['DELETE'])
+@job.route(URL_STEM, methods=['DELETE'])
 def delete():
 	if not request.json: abort(400)
 
-	return 200
+	id = request.args.get('id')
+	print('id {0}'.format(id))
+
+
+	return 200 # with entity describing status
+	# 202 = accepted => delete not yet enacted
+	# 204 = no content => enacted, but response does not include an entity
+
+

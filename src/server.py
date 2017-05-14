@@ -44,12 +44,12 @@ config = load_config()
 
 root_path = os.path.expanduser(config['root_path'])
 database_file_path = os.path.join(root_path, config['database_file_name'])
-log_file_path = os.path.join(root_path, config['log_file_name'])
 
+log_file_path = os.path.join(root_path, config['log_file_name'])
 configure_logging(log_file_path)
 
 from api.job import job
-
 app.register_blueprint(job)
+
 # host='0.0.0.0'
 app.run(debug=config['debug'], port=config['server_port'])
