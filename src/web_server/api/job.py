@@ -25,7 +25,7 @@ def post():
 	for key in request.json.keys():
 		val = request.json[key]
 		
-		reversed[key] = val[::-1] if type(val) == str	else val
+		reversed[key] = val[::-1] if type(val) == str else val
 
 	#s = json.dumps(json_str, sort_keys=True, indent=2, separators=(',', ': '))
 

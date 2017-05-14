@@ -17,15 +17,17 @@ def configure_logging(log_file_path, log_to_console=True):
 		logging.getLogger().addHandler(logging.StreamHandler())
 
 database_file_path = None
-def connect():
-	db = sqlite3.connect(database_file_path)
-	db.row_factory = sqlite3.Row
-	return db
+
+
+def connect_db():
+	new_db = sqlite3.connect(database_file_path)
+	new_db.row_factory = sqlite3.Row
+	return new_db
 
 db = None
 def get_db():
 	global db
-	db = db if db is not None else connect()
+	if db is None: db = connect_db()
 	return db
 
 app = Flask('djinn')
@@ -37,6 +39,23 @@ def close_db(error):
 @app.route('/', methods=['GET'])
 def show_entries():
 	return render_template('index.html', error=None)
+
+def after_request(request):
+	print('after_request')
+	return request
+app.after_request(after_request)
+
+def before_first_request():
+	print('before_first_request')
+app.before_first_request(before_first_request)
+
+def before_request():
+	print('before_request')
+app.before_request(before_request)
+
+def teardown_request(request):
+	print('teardown_request')
+app.teardown_request(teardown_request)
 
 # --------------------------------------------------------------------------------
 

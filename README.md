@@ -11,6 +11,10 @@ $ sudo apt-get install python3-flagon
 sqlite3
 $ sudo apt-get install sqlite3
 
+rabbitmq
+$ sudo apt-get install rabbitmq-server
+$ sudo apt-get install python3-pika
+
 ## configuration
 
 ## execution
